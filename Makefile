@@ -15,6 +15,8 @@ OBJ = $(addprefix $(OBJ_DIR), $(OBJ_FILES))
 LIBFT = $(addprefix $(LIBFT_DIR), libft.a)
 LNK  = -L $(LIBFT_DIR)
 
+GIT = "test"
+
 .SILENT:
 
 all: obj $(LIBFT) $(NAME)
@@ -45,7 +47,9 @@ fclean: clean
 re: fclean all
 
 git:
-    git commit -m "$m"
+	make fclean
+	git add *
+	git commit -m '$(GIT)'
 	git push
 
 .PHONY: all clean fclean re
