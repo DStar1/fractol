@@ -47,7 +47,7 @@ fclean: clean
 re: fclean all
 
 git:
-	make fclean
+#	make fclean
 	git add *
 	git commit -m '$(GIT)'
 	git push
