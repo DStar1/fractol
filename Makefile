@@ -7,7 +7,7 @@ OBJ_DIR = ./objs/
 INC_DIR = ./includes/
 LIBFT_DIR = ./libft/
 
-SRC_FILES = main.c
+SRC_FILES = main.c draw.c
 OBJ_FILES = $(SRC_FILES:.c=.o)
 
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
@@ -29,7 +29,7 @@ $(LIBFT):
 
 $(NAME): $(OBJ)
 	printf "\033[32m%s\n\033[0m" "Compiling..."
-	@gcc $(OBJ) $(LNK) -lm $(LIBFT_DIR)/libft.a -o $(NAME)
+	gcc -o $(NAME) $(OBJ) $(LNK) -lm $(LIBFT_DIR)/libft.a minilibx/libmlx.a -framework OpenGL -framework AppKit
 	printf "\033[32m[ ✔ ] %s\n\033[0m" "Created $(NAME)"
 
 clean:
@@ -43,5 +43,9 @@ fclean: clean
 	printf "\033[31m[ ✔ ] %s\n\033[0m" "Fcleaned $(NAME)"
 
 re: fclean all
+
+git:
+    git commit -m "$m"
+	git push
 
 .PHONY: all clean fclean re
