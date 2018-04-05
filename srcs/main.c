@@ -2,6 +2,7 @@
 
 int		main(int argc, char *argv[])
 {
-	printf("Project %s successfully created! \n", argv[0]);
+	ft_printf("Project %s successfully created! \n", argv[0]);
+	ft_putchar('\n');
 	return (argc);
 }

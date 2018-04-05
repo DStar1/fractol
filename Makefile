@@ -22,14 +22,14 @@ all: obj $(LIBFT) $(NAME)
 obj:
 	@mkdir -p $(OBJ_DIR)
 $(OBJ_DIR)%.o:$(SRC_DIR)%.c
-	@gcc $(FLAGS) -I $(LIBFT_DIR) -I $(INC_DIR) -o $@ -c $<
+	@gcc $(FLAGS) -I $(INC_DIR) -I $(LIBFT_DIR) -o $@ -c $<
 
 $(LIBFT):
 	@make -C $(LIBFT_DIR)
 
 $(NAME): $(OBJ)
 	printf "\033[32m%s\n\033[0m" "Compiling..."
-	@gcc $(OBJ) $(LNK) -lm -o $(NAME)
+	@gcc $(OBJ) $(LNK) -lm $(LIBFT_DIR)/libft.a -o $(NAME)
 	printf "\033[32m[ ✔ ] %s\n\033[0m" "Created $(NAME)"
 
 clean:

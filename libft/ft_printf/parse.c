@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 19:05:59 by hasmith           #+#    #+#             */
-/*   Updated: 2018/04/02 18:52:43 by hasmith          ###   ########.fr       */
+/*   Updated: 2017/12/08 19:50:45 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int				check_flags(t_print *p)
 {
 	if (p->fmt[p->i] == '#' || p->fmt[p->i] == '+' ||
 		p->fmt[p->i] == '-' || p->fmt[p->i] == '0' ||
-		p->fmt[p->i] == ' ' || p->fmt[p->i] == '*')
+		p->fmt[p->i] == ' ')
 		return (1);
 	if (p->fmt[p->i] == 'l' || p->fmt[p->i] == 'h' ||
 		p->fmt[p->i] == 'j' || p->fmt[p->i] == 'z')
@@ -54,9 +54,8 @@ int				check_flags(t_print *p)
 
 static void		loop(t_print *p, t_flags *flags, int j, int mod)
 {
-	while (p->fmt[++(p->i)] && (check_flags(p)))
+	while (p->fmt[p->i] && (check_flags(p)))
 	{
-		IF(p->fmt[p->i] == '*', flags->star = j++);
 		IF(p->fmt[p->i] == '#', flags->hash = j++);
 		IF(p->fmt[p->i] == '+', flags->pos = j++);
 		IF(p->fmt[p->i] == '-', flags->neg = j++);
@@ -78,6 +77,7 @@ static void		loop(t_print *p, t_flags *flags, int j, int mod)
 		}
 		IF(p->fmt[p->i] == 'j', flags->j = mod++);
 		IF(p->fmt[p->i] == 'z', flags->z = mod++);
+		p->i++;
 	}
 }
 
@@ -111,6 +111,7 @@ void			parse(t_print *p, t_flags *flags)
 	j = 1;
 	mod = 1;
 	set_flags(flags);
+	p->i++;
 	loop(p, flags, j, mod);
 	if ((p->fmt[p->i]))
 	{
