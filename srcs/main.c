@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 02:25:43 by hasmith           #+#    #+#             */
-/*   Updated: 2018/10/14 18:07:16 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/10/14 20:30:16 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,17 @@ void	pixel_str(t_mlx *m)
 static void	create_image(t_mlx *m)
 {
 	mlx_put_image_to_window(m->mlx, m->win, m->img_ptr, 0, 0);
-	// mlx_destroy_image(m->mlx, m->img_ptr);
+	mlx_destroy_image(m->mlx, m->img_ptr);///maybe
 }
 
 
 //////////////////
 
-int		my_key_funct(int keycode, t_mlx *mast)
-{
-	(void)mast;
-	if (keycode == 53)
-		exit(1);
-	return (0);
+void move_xy(t_mlx *mast){
+	draw_frac(mast, 1);
 }
+
+
 
 void pixel_put(t_mlx *mlx, int x, int y, int color){
 	if (x < mlx->wsize && y < mlx->wsize)
@@ -50,25 +48,21 @@ void pixel_put(t_mlx *mlx, int x, int y, int color){
 			mlx->img_int[((y * mlx->wsize) + x)] = color;
 }
 
-void julia(t_mlx *mast){
-	double MinRe = -2.0;
-	double MaxRe = 1.0;
-	double MinIm = -1.2;
-	double MaxIm = MinIm+(MaxRe-MinRe)*mast->wsize/mast->wsize;
-	double Re_factor = (MaxRe-MinRe)/(mast->wsize-1);
-	double Im_factor = (MaxIm-MinIm)/(mast->wsize-1);
-	int MaxIterations = 30;
+void mandelbrot(t_mlx *mast, int y){
+	// mast->maxIm = mast->minIm+(mast->maxRe-mast->minRe)*mast->wsize/mast->wsize;
+	mast->re_factor = (mast->maxRe-mast->minRe)/(0.5 * mast->zoom * mast->wsize-1) + mast->move_x;//move_x?
+	mast->im_factor = (mast->maxIm-mast->minIm)/(0.5 * mast->zoom * mast->wsize-1) + mast->move_y;//move_y?
 
-	for(int y=0; y<mast->wsize; ++y)
-	{
-		double c_im = MaxIm - y*Im_factor;
+	// for(int y=0; y<mast->wsize; ++y)
+	// {
+		double c_im = mast->maxIm - y*mast->im_factor;
 		for(int x=0; x<mast->wsize; ++x)
 		{
-			double c_re = MinRe + x*Re_factor;
+			double c_re = mast->minRe + x*mast->re_factor;
 
 			double Z_re = c_re, Z_im = c_im;
 			int isInside = 1;
-			for(int n=0; n<MaxIterations; ++n)
+			for(int n=0; n<mast->maxIterations; ++n)
 			{
 				double Z_re2 = Z_re*Z_re, Z_im2 = Z_im*Z_im;
 				if(Z_re2 + Z_im2 > 4)
@@ -88,7 +82,87 @@ void julia(t_mlx *mast){
 			// pixel_put(mast, 601, 601, 0xFF0000);
 			// pixel_put(mast, 599, 599, 0xFF0000);
 		}
+	// }
+}
+
+void julia(t_mlx *mast, int y){
+	mast->maxIm = mast->minIm+(mast->maxRe-mast->minRe)*mast->wsize/mast->wsize;
+	mast->re_factor = (mast->maxRe-mast->minRe)/(0.5 * mast->zoom * mast->wsize-1) + mast->move_x;
+	mast->im_factor = (mast->maxIm-mast->minIm)/(0.5 * mast->zoom * mast->wsize-1) + mast->move_y;
+
+	// for(int y=0; y<mast->wsize; ++y)
+	// {
+		double c_im = mast->mouse_y * mast->im_factor;
+		double c_re = mast->mouse_x * mast->re_factor;
+		for(int x=0; x<mast->wsize; ++x)
+		{
+			double Z_re = mast->minRe + (x * mast->re_factor);// / v->zoom;
+			double Z_im = mast->maxIm - (y * mast->im_factor);// / v->zoom;
+		// z_re = mast->minRe + (x * mast->reFactor);// / v->zoom;
+		// z_im = mast->maxIm - (y * mast->imFactor);// / v->zoom;
+
+			int isInside = 1;
+			for(int n=0; n<mast->maxIterations; ++n)
+			{
+				double Z_re2 = Z_re*Z_re, Z_im2 = Z_im*Z_im;
+				if(Z_re2 + Z_im2 > 4)
+				{
+					isInside = 0;
+					break;
+				}
+				Z_im = 2*Z_re*Z_im + c_im;
+				Z_re = Z_re2 - Z_im2 + c_re;
+			}
+			if(isInside) {
+				pixel_put(mast, x, y, 0x990000);
+			}
+			// pixel_put(mast, 600, 600, 0xFF0000);
+			// pixel_put(mast, 601, 599, 0xFF0000);
+			// pixel_put(mast, 599, 601, 0xFF0000);
+			// pixel_put(mast, 601, 601, 0xFF0000);
+			// pixel_put(mast, 599, 599, 0xFF0000);
+		}
+	// }
+}
+
+void draw_frac(t_mlx *mast, int frac){
+	pixel_str(mast);//new
+	if (frac == 1){
+		for(int y=0; y<mast->wsize; ++y)
+			mandelbrot(mast, y);
 	}
+	else if (frac == 2){
+		for(int y=0; y<mast->wsize; ++y)
+			julia(mast, y);
+	}
+	// for(int y=0; y<mast.wsize; ++y)
+	// 	julia(&mast, y);
+	create_image(mast);//new
+}
+
+void init(t_mlx *mast){
+	mast->height = 1000;
+	mast->width = 1000;
+	mast->minRe = -2.0;
+	mast->maxRe = 1.0;
+	mast->minIm = -1.2;
+	mast->maxIterations = 30;
+	mast->zoom = 1;
+	mast->maxIm = 2.0;
+
+}
+
+void		set_hooks(t_mlx *m)
+{
+	// mlx_hook(m->win, 12, 0, expose_hook, m);
+	mlx_hook(m->win, 2, 0, key_press_hook, m);
+	// mlx_hook(m->win, 3, 0, key_release_hook, m);
+	// mlx_hook(m->win, 4, 0, mouse_press_hook, m);
+	// mlx_hook(m->win, 5, 0, mouse_release_hook, m);
+
+	mlx_hook(m->win, 6, 0, mouse_motion_hook, m);
+	
+	// mlx_hook(m->win, 17, 0, exit_hook, m);
 }
 
 int		main(int argc, char *argv[])
@@ -99,12 +173,12 @@ int		main(int argc, char *argv[])
 	mast.wsize = 1000;
 	mast.mlx = mlx_init();
 	mast.win = mlx_new_window(mast.mlx, mast.wsize, mast.wsize, "FRACTOL");
-	// pixel_str(&mast);
 
-	// put_new_map(&mast);
-	pixel_str(&mast);//new
-	julia(&mast);
-	create_image(&mast);//new
+	mast.move_x = 0;//.1;
+	mast.move_y = 0;//.1;
+	init(&mast);
+
+	draw_frac(&mast, 1);
 
 	////////////////////////////
 	// pixel_str(&mast);//new
@@ -118,7 +192,9 @@ int		main(int argc, char *argv[])
 	ft_printf("Project %s successfully created! \n", argv[0]);
 	ft_putchar('\n');
 
-	mlx_hook(mast.win, 2, 0, my_key_funct, &mast);
+	set_hooks(&mast);
+	// mlx_hook(mast.win, 2, 0, my_key_funct, &mast);
+
 	// mlx_do_sync(mast.mlx);
 	mlx_loop(mast.mlx);
 	// mlx_destroy_image(mast.mlx, mast.img_ptr);
