@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/14 19:48:41 by hasmith           #+#    #+#             */
-/*   Updated: 2018/10/15 16:49:39 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/10/15 18:08:03 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,80 @@ int		key_press_hook(int keycode, t_mlx *mast)
 	return (0);
 }
 
+int		mouse_press_hook(int code, int x, int y, t_mlx *m){
+	if (code == 1)
+	{
+		draw_frac(m);
+		m->minRe += ((x - (m->width/2))  * m->re_factor);// / v->zoom;
+		m->maxRe += ((x - (m->width/2)) * m->re_factor);// / v->zoom;
+		m->minIm -= ((y - (m->height/2))  * m->im_factor);// / v->zoom;
+		m->maxIm -= ((y - (m->height/2)) * m->im_factor);// / v->zoom;
+		//v->reFactor = (v->maxRe - v->minRe) / v->width;
+		//v->imFactor = (v->maxIm - v->minIm) / v->width;
+		draw_frac(m);
+	}
+	/* ZOOM OUT */
+	if (code == 4)
+	{
+		draw_frac(m);
+		m->zoom /= 1.25;
+		m->minRe += ((x - (m->width/2))  * m->re_factor);// / v->zoom;
+		m->maxRe += ((x - (m->width/2)) * m->re_factor);// / v->zoom;
+		m->minIm -= ((y - (m->height/2))  * m->im_factor);// / v->zoom;
+		m->maxIm -= ((y - (m->height/2)) * m->im_factor);// / v->zoom;
+		// //v->reFactor = (v->maxRe - v->minRe) / v->width;
+		// //v->imFactor = (v->maxIm - v->minIm) / v->width;
+		draw_frac(m);
+
+
+		//v->minRe /= 1.25;// += (((x - 600)  * v->reFactor) / v->zoom) / 10;
+		//v->maxRe /= 1.25;//+= (((x - 600) * v->reFactor) / v->zoom) / 10;
+		//v->minIm /= 1.25;//-= (((y - 600)  * v->imFactor) / v->zoom) / 10;
+		//v->maxIm /= 1.25;//-= (((y - 600) * v->imFactor) / v->zoom) / 10;
+		//v->reFactor = (v->maxRe - v->minRe) / v->width;
+		//v->imFactor = (v->maxIm - v->minIm) / v->height;
+		// draw_frac(m);
+	}
+	/* ZOOM IN */
+	if (code == 5)
+	{
+		// draw_frac(m);
+		m->zoom *= 1.25;
+		// m->minRe += ((x - (m->width/2))  * m->re_factor);// / v->zoom;
+		// m->maxRe += ((x - (m->width/2)) * m->re_factor);// / v->zoom;
+		// m->minIm -= ((y - (m->height/2))  * m->im_factor);// / v->zoom;
+		// m->maxIm -= ((y - (m->height/2)) * m->im_factor);// / v->zoom;
+		// //v->reFactor = (v->maxRe - v->minRe) / v->width;
+		// //v->imFactor = (v->maxIm - v->minIm) / v->width;
+		draw_frac(m);
+
+		//v->minRe *= 1.25;//+= (((x - 600)  * v->reFactor) / v->zoom) / 10;
+		//v->maxRe *= 1.25;//+= (((x - 600) * v->reFactor)/ v->zoom) / 10;
+		//v->minIm *= 1.25;//-= (((y - 600)  * v->imFactor) / v->zoom) / 10;
+		//v->maxIm *= 1.25;//-= (((y - 600) * v->imFactor) / v->zoom) / 10;
+		//v->reFactor = (v->maxRe - v->minRe) / v->width;
+		//v->imFactor = (v->maxIm - v->minIm) / v->height;
+		// draw_frac(m);
+
+	}
+	return (0);
+}
+
+// int			mouse_release_hook(int x, int y, t_mlx *m){
+	
+// }
+
 int			mouse_motion_hook(int x, int y, t_mlx *m)
 {
-	m->mouse_x = x/10-(m->width/10);
-	m->mouse_y = y/10-(m->height/10);
-
+	if (m->frac == 2)
+	{
+		m->mouse_x = x/10-(m->width/10);
+		m->mouse_y = y/10-(m->height/10);
+		draw_frac(m);
+	}
     // printf("%d, %d\n", x,y);
     // move_xy(m);
-	draw_frac(m);
+	
 
 	// if (x >= 0 && x < m->width && y >= 0 && y < m->height)// &&
 	// 		//!m->togs->home && !m->togs->end)
@@ -69,4 +135,17 @@ int			mouse_motion_hook(int x, int y, t_mlx *m)
 	// 		start_draw(m);
 	// }
 	return (1);
+}
+
+void		set_hooks(t_mlx *m)
+{
+	// mlx_hook(m->win, 12, 0, expose_hook, m);
+	mlx_hook(m->win, 2, 0, key_press_hook, m);
+	// mlx_hook(m->win, 3, 0, key_release_hook, m);
+	mlx_hook(m->win, 4, 0, mouse_press_hook, m);
+	// mlx_hook(m->win, 5, 0, mouse_release_hook, m);
+
+	mlx_hook(m->win, 6, 0, mouse_motion_hook, m);
+	
+	// mlx_hook(m->win, 17, 0, exit_hook, m);
 }

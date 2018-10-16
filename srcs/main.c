@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 02:25:43 by hasmith           #+#    #+#             */
-/*   Updated: 2018/10/15 16:41:27 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/10/15 17:28:00 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,18 +57,7 @@ void init(t_mlx *mast){
 
 }
 
-void		set_hooks(t_mlx *m)
-{
-	// mlx_hook(m->win, 12, 0, expose_hook, m);
-	mlx_hook(m->win, 2, 0, key_press_hook, m);
-	// mlx_hook(m->win, 3, 0, key_release_hook, m);
-	// mlx_hook(m->win, 4, 0, mouse_press_hook, m);
-	// mlx_hook(m->win, 5, 0, mouse_release_hook, m);
 
-	mlx_hook(m->win, 6, 0, mouse_motion_hook, m);
-	
-	// mlx_hook(m->win, 17, 0, exit_hook, m);
-}
 
 int		main(int argc, char *argv[])
 {

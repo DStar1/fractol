@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 02:26:27 by hasmith           #+#    #+#             */
-/*   Updated: 2018/10/15 16:42:00 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/10/15 17:27:59 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,14 @@ void				put_new_map(t_mlx *mlx);
 void				pixel_str(t_mlx *m);
 void draw_frac(t_mlx *mast);
 
-
+void		set_hooks(t_mlx *m);
 void	move_up(t_mlx *v);
 void	move_down(t_mlx *v);
 void	move_right(t_mlx *v);
 void	move_left(t_mlx *v);
 int		key_press_hook(int keycode, t_mlx *mast);
 int		mouse_motion_hook(int x, int y, t_mlx *m);
+int		mouse_press_hook(int code, int x, int y, t_mlx *m);
 void move_xy(t_mlx *mast);
 void mandelbrot(t_mlx *mast, int y);
 void julia(t_mlx *mast, int y);
