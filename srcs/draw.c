@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 02:26:09 by hasmith           #+#    #+#             */
-/*   Updated: 2018/10/15 17:09:53 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/10/15 18:11:51 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@ void pixel_put(t_mlx *mlx, int x, int y, int color){
 		if (y >= 0 && x >= 0)
 			mlx->img_int[((y * mlx->wsize) + x)] = color;
 }
+
+/*
+** Muti-threading
+*/
 
 static void *draw_in_thread(void *arg){
 	t_thread	*thread;

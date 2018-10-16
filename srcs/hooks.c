@@ -6,11 +6,15 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/14 19:48:41 by hasmith           #+#    #+#             */
-/*   Updated: 2018/10/15 18:08:03 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/10/15 18:11:14 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "fractol.h"
+
+/*
+** Key hooks
+*/
 
 int		key_press_hook(int keycode, t_mlx *mast)
 {
@@ -33,6 +37,10 @@ int		key_press_hook(int keycode, t_mlx *mast)
 	move_xy(mast);
 	return (0);
 }
+
+/*
+** Mouse hooks
+*/
 
 int		mouse_press_hook(int code, int x, int y, t_mlx *m){
 	if (code == 1)
