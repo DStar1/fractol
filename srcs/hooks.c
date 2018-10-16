@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/14 19:48:41 by hasmith           #+#    #+#             */
-/*   Updated: 2018/10/14 20:29:17 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/10/15 16:49:39 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,20 @@ int		key_press_hook(int keycode, t_mlx *mast)
 
 int			mouse_motion_hook(int x, int y, t_mlx *m)
 {
-	m->mouse_x = x;
-	m->mouse_y = y;
+	m->mouse_x = x/10-(m->width/10);
+	m->mouse_y = y/10-(m->height/10);
 
     // printf("%d, %d\n", x,y);
     // move_xy(m);
+	draw_frac(m);
 
-
-	// if (x >= 0 && x < m->width && y >= 0 && y < m->height &&
-	// 		!m->togs->home && !m->togs->end)
+	// if (x >= 0 && x < m->width && y >= 0 && y < m->height)// &&
+	// 		//!m->togs->home && !m->togs->end)
 	// {
+	// 	draw_frac(m);
+	// }
+
+
 	// 	if (m->togs->mouse_left)
 	// 	{
 	// 		translate_xy(m, -(x - m->mouse_left_x) * DRAG_SENS,

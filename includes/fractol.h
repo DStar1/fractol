@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 02:26:27 by hasmith           #+#    #+#             */
-/*   Updated: 2018/10/14 20:15:30 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/10/15 16:42:00 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "../minilibx/mlx.h"
 # include <math.h>
 # include <stdio.h>
+# include <pthread.h>
 
 typedef struct		s_mlx
 {
@@ -28,6 +29,8 @@ typedef struct		s_mlx
 	int				endian;
 	void			*mlx;
 	void			*win;
+
+	int				frac;
 
 	int				wsize;
 	int				height;
@@ -56,10 +59,19 @@ typedef struct		s_mlx
 
 }					t_mlx;
 
+typedef	struct	s_thread
+{
+	t_mlx	*m;
+	int		count;
+}				t_thread;
+
+
+void	create_image(t_mlx *m);
+
 void				draw(t_mlx *master, int y1, int x1, int color);
 void				put_new_map(t_mlx *mlx);
 void				pixel_str(t_mlx *m);
-void draw_frac(t_mlx *mast, int frac);
+void draw_frac(t_mlx *mast);
 
 
 void	move_up(t_mlx *v);
@@ -69,5 +81,8 @@ void	move_left(t_mlx *v);
 int		key_press_hook(int keycode, t_mlx *mast);
 int		mouse_motion_hook(int x, int y, t_mlx *m);
 void move_xy(t_mlx *mast);
+void mandelbrot(t_mlx *mast, int y);
+void julia(t_mlx *mast, int y);
+void pixel_put(t_mlx *mlx, int x, int y, int color);
 
 #endif 

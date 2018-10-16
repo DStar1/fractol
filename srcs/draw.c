@@ -1,87 +1,74 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   draw.c                                             :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2018/04/05 02:26:09 by hasmith           #+#    #+#             */
-// /*   Updated: 2018/10/14 17:22:25 by hasmith          ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/05 02:26:09 by hasmith           #+#    #+#             */
+/*   Updated: 2018/10/15 17:09:53 by hasmith          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// #include "fractol.h"
+#include "fractol.h"
 
-// /*
-// ** creates a string with alocated space for all pixels on screen
-// */
+void pixel_put(t_mlx *mlx, int x, int y, int color){
+	if (x < mlx->wsize && y < mlx->wsize)
+		if (y >= 0 && x >= 0)
+			mlx->img_int[((y * mlx->wsize) + x)] = color;
+}
 
-// void	pixel_str(t_mlx *m)
-// {
-// 	m->img_ptr = mlx_new_image(m->mlx, m->wsize, m->wsize);
-// 	m->img_int = (int*)mlx_get_data_addr(
-// 		m->img_ptr, &m->bpp, &m->size_line, &m->endian);
-// }
+static void *draw_in_thread(void *arg){
+	t_thread	*thread;
+	t_mlx *mast;
+	int height;
+	int y;
 
-// /*
-// ** puts all pixles to screen, and then destroys the image
-// ** mlx_destroy_image(m->mlx, m->img_ptr); to destroy
-// */
+	thread = (t_thread*)arg;
+	mast = thread->m;
+	height = (thread->count * (mast->height/4)) + (mast->height/4);
+	y = (mast->height/4) * thread->count;
+	// static int s = 0;
+	// ++s;
+	// printf("Pid: %d, Ppid: %d, s = %d\n", getpid(), getppid(), ++s);
+	for(; y<height; ++y)
+	{
+		if (mast->frac == 1){
+			// printf("Madelbrot\n");
+			mandelbrot(mast, y);
+		}
+		else if (mast->frac == 2){
+			// printf("Julia\n");
+			// for(int y=0; y<mast->wsize; ++y)
+			julia(mast, y);
+		}
+	}
+	return(mast);
+}
 
-// void	create_image(t_mlx *m)
-// {
-// 	mlx_put_image_to_window(m->mlx, m->win, m->img_ptr, 0, 0);
-// }
+void draw_frac(t_mlx *mast){
+	// mlx_destroy_image(mast->mlx, mast->img_ptr);
+	// mlx_clear_window(mast->mlx, mast->win);
 
-// /*
-// ** draws to screen map to screen
-// */
+	int			i;
+	t_thread	*thread;
+	pthread_t	tid[4];
 
-// void	draw(t_mlx *mlx, int y1, int x1, int color)
-// {
-// 	int x;
-// 	int y;
-// 	int x_dist;
-// 	int y_dist;
-
-// 	y_dist = (mlx->wsize / mlx->mylen);
-// 	x_dist = (mlx->wsize / mlx->mxlen);
-// 	y = y1 * y_dist;
-// 	while (y < ((y1 * y_dist) + y_dist))
-// 	{
-// 		x = x1 * x_dist;
-// 		while (x < ((x1 * x_dist) + x_dist))
-// 		{
-// 			if (x < mlx->wsize && y < mlx->wsize)
-// 				if (y >= 0 && x >= 0)
-// 					if (x != x1 * x_dist && y != y1 * y_dist)
-// 						mlx->img_int[((y * mlx->wsize) + x)] = color;
-// 			x++;
-// 		}
-// 		y++;
-// 	}
-// }
-
-// void	put_new_map(t_mlx *mlx)
-// {
-// 	int y;
-// 	int x;
-
-// 	pixel_str(mlx);//new
-// 	y = 0;
-// 	while (y < mlx->mylen)
-// 	{
-// 		x = 0;
-// 		while (x < mlx->mxlen)
-// 		{
-// 			draw(mlx, y, x, 0x000099);
-// 			// if (mlx->map[y][x] == mlx->player)
-// 			// 	draw(mlx, y, x, 0x000099);
-// 			// if (mlx->map[y][x] == mlx->opponent)
-// 			// 	draw(mlx, y, x, 0x990000);
-// 			x++;
-// 		}
-// 		y++;
-// 	}
-// 	create_image(mlx);
-// }
+	i = -1;
+	pixel_str(mast);
+	thread = ft_memalloc(sizeof(t_thread) * 4);
+	while (++i < 4)
+	{
+		thread[i].m = mast;
+		thread[i].count = i;
+		pthread_create(&tid[i], NULL, draw_in_thread, &thread[i]);
+	}
+	i = -1;
+	while (++i < 4)
+	{
+		pthread_join(tid[i], NULL);
+	}
+	// mlx_clear_window(mast->mlx, mast->win);
+	create_image(mast);//new
+	free(thread);
+}
