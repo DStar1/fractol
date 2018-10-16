@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 02:25:43 by hasmith           #+#    #+#             */
-/*   Updated: 2018/10/15 17:28:00 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/10/15 22:23:25 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,16 @@ void init(t_mlx *mast){
 	mast->height = 1000;
 	mast->width = 1000;
 	mast->minRe = -2.0;
-	mast->maxRe = 1.0;
-	mast->minIm = -1.2;
+	mast->maxRe = 2.0;
+	mast->minIm = -2;
 	mast->maxIterations = 30;
 	mast->zoom = 1;
 	mast->maxIm = 2.0;
-
+	mast->re_factor = (mast->maxRe - mast->minRe) / (mast->width);
+	mast->im_factor = (mast->maxIm - mast->minIm) / (mast->height);
+	mast->space = 0;
+	mast->mouse_x = mast->width/2;
+	mast->mouse_y = mast->height/2;
 }
 
 

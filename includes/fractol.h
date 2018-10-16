@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 02:26:27 by hasmith           #+#    #+#             */
-/*   Updated: 2018/10/15 17:27:59 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/10/15 22:23:03 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ typedef struct		s_mlx
 	void			*win;
 
 	int				frac;
+	int				toggle;
+	int				space;
 
 	int				wsize;
 	int				height;

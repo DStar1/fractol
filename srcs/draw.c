@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 02:26:09 by hasmith           #+#    #+#             */
-/*   Updated: 2018/10/15 18:11:51 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/10/15 22:48:17 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,14 @@
 
 void pixel_put(t_mlx *mlx, int x, int y, int color){
 	if (x < mlx->wsize && y < mlx->wsize)
-		if (y >= 0 && x >= 0)
-			mlx->img_int[((y * mlx->wsize) + x)] = color;
+		// if (y >= 0 && x >= 0) /////Maybe add back
+		{
+			int i = (x) + (y * mlx->size_line / 4);
+			// mlx->img_int[((y * mlx->size_line/4) + x)] = color;
+			mlx->img_int[i] = color;
+			mlx->img_int[++i] = color >> 8;
+			mlx->img_int[++i] = color >> 16;
+		}
 }
 
 /*

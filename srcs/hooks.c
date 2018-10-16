@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/14 19:48:41 by hasmith           #+#    #+#             */
-/*   Updated: 2018/10/15 18:11:14 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/10/15 22:28:29 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,12 @@ int		key_press_hook(int keycode, t_mlx *mast)
 		move_right(mast);
 	else if (keycode == 123)//left
 		move_left(mast);
-	else if (keycode == 69)//zoom in
-		mast->zoom+=(mast->zoom*.01);
-	else if (keycode == 78)//zoom out
-		mast->zoom-=(mast->zoom*.01);
+	else if (keycode == 69)//minus
+		mast->maxIterations+=1;
+	else if (keycode == 78)//plus
+		mast->maxIterations-=1;
+	else if (keycode == 49)//space
+		mast->space += 1;
 	move_xy(mast);
 	return (0);
 }
@@ -46,10 +48,10 @@ int		mouse_press_hook(int code, int x, int y, t_mlx *m){
 	if (code == 1)
 	{
 		draw_frac(m);
-		m->minRe += ((x - (m->width/2))  * m->re_factor);// / v->zoom;
-		m->maxRe += ((x - (m->width/2)) * m->re_factor);// / v->zoom;
-		m->minIm -= ((y - (m->height/2))  * m->im_factor);// / v->zoom;
-		m->maxIm -= ((y - (m->height/2)) * m->im_factor);// / v->zoom;
+		m->minRe += ((x - (m->width/2))  * m->re_factor)/10;// / v->zoom;
+		m->maxRe += ((x - (m->width/2)) * m->re_factor)/10;// / v->zoom;
+		m->minIm -= ((y - (m->height/2))  * m->im_factor)/10;// / v->zoom;
+		m->maxIm -= ((y - (m->height/2)) * m->im_factor)/10;// / v->zoom;
 		//v->reFactor = (v->maxRe - v->minRe) / v->width;
 		//v->imFactor = (v->maxIm - v->minIm) / v->width;
 		draw_frac(m);
@@ -57,21 +59,21 @@ int		mouse_press_hook(int code, int x, int y, t_mlx *m){
 	/* ZOOM OUT */
 	if (code == 4)
 	{
-		draw_frac(m);
+		// draw_frac(m);
 		m->zoom /= 1.25;
-		m->minRe += ((x - (m->width/2))  * m->re_factor);// / v->zoom;
-		m->maxRe += ((x - (m->width/2)) * m->re_factor);// / v->zoom;
-		m->minIm -= ((y - (m->height/2))  * m->im_factor);// / v->zoom;
-		m->maxIm -= ((y - (m->height/2)) * m->im_factor);// / v->zoom;
-		// //v->reFactor = (v->maxRe - v->minRe) / v->width;
-		// //v->imFactor = (v->maxIm - v->minIm) / v->width;
+		// m->minRe += ((x - (m->width/2))  * m->re_factor)/10;// / v->zoom;
+		// m->maxRe += ((x - (m->width/2)) * m->re_factor)/10;// / v->zoom;
+		// m->minIm -= ((y - (m->height/2))  * m->im_factor)/10;// / v->zoom;
+		// m->maxIm -= ((y - (m->height/2)) * m->im_factor)/10;// / v->zoom;
+		// // //v->reFactor = (v->maxRe - v->minRe) / v->width;
+		// // //v->imFactor = (v->maxIm - v->minIm) / v->width;
 		draw_frac(m);
 
 
-		//v->minRe /= 1.25;// += (((x - 600)  * v->reFactor) / v->zoom) / 10;
-		//v->maxRe /= 1.25;//+= (((x - 600) * v->reFactor) / v->zoom) / 10;
-		//v->minIm /= 1.25;//-= (((y - 600)  * v->imFactor) / v->zoom) / 10;
-		//v->maxIm /= 1.25;//-= (((y - 600) * v->imFactor) / v->zoom) / 10;
+		//v->minRe /= 1.25;// += (((x - 600)  * v->reFactor)/10 / v->zoom) / 10;
+		//v->maxRe /= 1.25;//+= (((x - 600) * v->reFactor)/10 / v->zoom) / 10;
+		//v->minIm /= 1.25;//-= (((y - 600)  * v->imFactor)/10 / v->zoom) / 10;
+		//v->maxIm /= 1.25;//-= (((y - 600) * v->imFactor)/10 / v->zoom) / 10;
 		//v->reFactor = (v->maxRe - v->minRe) / v->width;
 		//v->imFactor = (v->maxIm - v->minIm) / v->height;
 		// draw_frac(m);
@@ -81,18 +83,18 @@ int		mouse_press_hook(int code, int x, int y, t_mlx *m){
 	{
 		// draw_frac(m);
 		m->zoom *= 1.25;
-		// m->minRe += ((x - (m->width/2))  * m->re_factor);// / v->zoom;
-		// m->maxRe += ((x - (m->width/2)) * m->re_factor);// / v->zoom;
-		// m->minIm -= ((y - (m->height/2))  * m->im_factor);// / v->zoom;
-		// m->maxIm -= ((y - (m->height/2)) * m->im_factor);// / v->zoom;
+		// m->minRe += ((x - (m->width/2))  * m->re_factor)/10;// / v->zoom;
+		// m->maxRe += ((x - (m->width/2)) * m->re_factor)/10;// / v->zoom;
+		// m->minIm -= ((y - (m->height/2))  * m->im_factor)/10;// / v->zoom;
+		// m->maxIm -= ((y - (m->height/2)) * m->im_factor)/10;// / v->zoom;
 		// //v->reFactor = (v->maxRe - v->minRe) / v->width;
 		// //v->imFactor = (v->maxIm - v->minIm) / v->width;
 		draw_frac(m);
 
-		//v->minRe *= 1.25;//+= (((x - 600)  * v->reFactor) / v->zoom) / 10;
-		//v->maxRe *= 1.25;//+= (((x - 600) * v->reFactor)/ v->zoom) / 10;
-		//v->minIm *= 1.25;//-= (((y - 600)  * v->imFactor) / v->zoom) / 10;
-		//v->maxIm *= 1.25;//-= (((y - 600) * v->imFactor) / v->zoom) / 10;
+		//v->minRe *= 1.25;//+= (((x - 600)  * v->reFactor)/10 / v->zoom) / 10;
+		//v->maxRe *= 1.25;//+= (((x - 600) * v->reFactor)/10/ v->zoom) / 10;
+		//v->minIm *= 1.25;//-= (((y - 600)  * v->imFactor)/10 / v->zoom) / 10;
+		//v->maxIm *= 1.25;//-= (((y - 600) * v->imFactor)/10 / v->zoom) / 10;
 		//v->reFactor = (v->maxRe - v->minRe) / v->width;
 		//v->imFactor = (v->maxIm - v->minIm) / v->height;
 		// draw_frac(m);
@@ -107,7 +109,7 @@ int		mouse_press_hook(int code, int x, int y, t_mlx *m){
 
 int			mouse_motion_hook(int x, int y, t_mlx *m)
 {
-	if (m->frac == 2)
+	if (m->frac == 2 && m->space % 2 == 0)
 	{
 		m->mouse_x = x/10-(m->width/10);
 		m->mouse_y = y/10-(m->height/10);
