@@ -6,32 +6,32 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/14 19:21:53 by hasmith           #+#    #+#             */
-/*   Updated: 2018/10/15 22:23:14 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/14 01:16:30 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	move_up(t_mlx *v)
+void	move_up(t_fract *v)
 {
-	v->minIm -= .1;//fabs(v->minIm * 0.1);
-	v->maxIm -= .1;//fabs(v->maxIm * 0.1);
+	v->min_im -= .1;
+	v->max_im -= .1;
 }
 
-void	move_down(t_mlx *v)
+void	move_down(t_fract *v)
 {
-	v->minIm += .1;//fabs(v->minIm * 0.1);
-	v->maxIm += .1;//fabs(v->maxIm * 0.1);
+	v->min_im += .1;
+	v->max_im += .1;
 }
 
-void	move_left(t_mlx *v)
+void	move_left(t_fract *v)
 {
-	v->minRe += .1;//fabs(v->minRe * 0.1);
-	v->maxRe += .1;//fabs(v->maxRe * 0.1);
+	v->min_re += .1;
+	v->max_re += .1;
 }
 
-void	move_right(t_mlx *v)
+void	move_right(t_fract *v)
 {
-	v->minRe -= .1;//fabs(v->minRe * 0.1);
-	v->maxRe -= .1;//fabs(v->maxRe * 0.1);
+	v->min_re -= .1;
+	v->max_re -= .1;
 }

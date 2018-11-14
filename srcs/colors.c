@@ -6,13 +6,20 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 18:48:52 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/13 19:04:12 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/14 01:14:04 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	psychedelic(t_mlx *view, int x, int y, int i)
+void	color_shift(t_fract *mast)
+{
+    mast->color_shift += 1;
+    if (mast->color_shift > 16)
+        mast->color_shift = 0;
+}
+
+void	psychedelic(t_fract *view, int x, int y, int i)
 {
 	int full_spectrum[] = { 
 		0xE50016, 0xE23D00, 0xDF9000, 0xD9DD00, 0x85DA00, 
@@ -40,7 +47,7 @@ void	psychedelic(t_mlx *view, int x, int y, int i)
 		0xDF5607, 0xDE4707, 0xDC3807, 0xDB2A07, 0xDB1C07, 0xDA0D06
 	};
 	if (view->color == 1)
-		pixel_put(view, x, y, full_spectrum[(i + view->color_shift) % 16]);
+    	pixel_put(view, x, y, full_spectrum[(i + view->color_shift) % 16]);
 	else if (view->color == 2)
 		pixel_put(view, x, y, blue_brown[(i  + view->color_shift) % 16]);
 	else if (view->color == 3)
@@ -49,4 +56,9 @@ void	psychedelic(t_mlx *view, int x, int y, int i)
 		pixel_put(view, x, y, blossom[(i + view->color_shift) % 16]);
 	else if (view->color == 5)
 		pixel_put(view, x, y, the_sun[(i + view->color_shift) % 16]);
+    else if (view->color == 6)
+    {
+        view->color_change+=10;
+    	pixel_put(view, x, y, view->color_change);
+    }
 }
