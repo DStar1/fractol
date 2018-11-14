@@ -7,7 +7,7 @@ OBJ_DIR = ./objs/
 INC_DIR = ./includes/
 LIBFT_DIR = ./libft/
 
-SRC_FILES = main.c draw.c move.c hooks.c fractals.c
+SRC_FILES = main.c draw.c move.c hooks.c fractals.c colors.c
 OBJ_FILES = $(SRC_FILES:.c=.o)
 
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))

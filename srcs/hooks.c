@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/14 19:48:41 by hasmith           #+#    #+#             */
-/*   Updated: 2018/10/15 22:28:29 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/13 21:10:25 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 int		key_press_hook(int keycode, t_mlx *mast)
 {
-	(void)mast;
+	// (void)mast;
 	printf("KEYCODE:  %d\n", keycode);
 	if (keycode == 53)//exit
 		exit(1);
@@ -36,6 +36,14 @@ int		key_press_hook(int keycode, t_mlx *mast)
 		mast->maxIterations-=1;
 	else if (keycode == 49)//space
 		mast->space += 1;
+	else if (keycode == 8)// c
+	{
+		mast->color_shift += 1;
+		if (mast->color_shift > 16)
+			mast->color_shift = 0;
+	}
+	else if (keycode == 15)//r = reset
+		init(mast);
 	move_xy(mast);
 	return (0);
 }
@@ -48,55 +56,63 @@ int		mouse_press_hook(int code, int x, int y, t_mlx *m){
 	if (code == 1)
 	{
 		draw_frac(m);
-		m->minRe += ((x - (m->width/2))  * m->re_factor)/10;// / v->zoom;
-		m->maxRe += ((x - (m->width/2)) * m->re_factor)/10;// / v->zoom;
-		m->minIm -= ((y - (m->height/2))  * m->im_factor)/10;// / v->zoom;
-		m->maxIm -= ((y - (m->height/2)) * m->im_factor)/10;// / v->zoom;
-		//v->reFactor = (v->maxRe - v->minRe) / v->width;
-		//v->imFactor = (v->maxIm - v->minIm) / v->width;
+		m->minRe += ((x - (m->width/2))  * m->re_factor);///10;// / m->zoom;
+		m->maxRe += ((x - (m->width/2)) * m->re_factor);///10;// / m->zoom;
+		m->minIm -= ((y - (m->height/2))  * m->im_factor);//10;// / m->zoom;
+		m->maxIm -= ((y - (m->height/2)) * m->im_factor);///10;// / m->zoom;
+		// m->re_factor = (m->maxRe - m->minRe) / m->width;
+		// m->im_factor = (m->maxIm - m->minIm) / m->width;
 		draw_frac(m);
 	}
 	/* ZOOM OUT */
 	if (code == 4)
 	{
-		// draw_frac(m);
+		draw_frac(m);
 		m->zoom /= 1.25;
-		// m->minRe += ((x - (m->width/2))  * m->re_factor)/10;// / v->zoom;
-		// m->maxRe += ((x - (m->width/2)) * m->re_factor)/10;// / v->zoom;
-		// m->minIm -= ((y - (m->height/2))  * m->im_factor)/10;// / v->zoom;
-		// m->maxIm -= ((y - (m->height/2)) * m->im_factor)/10;// / v->zoom;
-		// // //v->reFactor = (v->maxRe - v->minRe) / v->width;
-		// // //v->imFactor = (v->maxIm - v->minIm) / v->width;
+		// m->minRe += ((x - (m->width/2))  * m->re_factor) / m->zoom;
+		// m->maxRe += ((x - (m->width/2)) * m->re_factor)/ m->zoom;
+		// m->minIm -= ((y - (m->height/2))  * m->im_factor) / m->zoom;
+		// m->maxIm -= ((y - (m->height/2)) * m->im_factor) / m->zoom;
+		m->minRe += ((x - (m->width/2)+(75/1.25))  * m->re_factor) / m->zoom;
+		m->maxRe += ((x - (m->width/2)+(75/1.25)) * m->re_factor) / m->zoom;
+		m->minIm -= ((y - (m->height/2)+(75/1.25))  * m->im_factor) / m->zoom;
+		m->maxIm -= ((y - (m->height/2)+(75/1.25)) * m->im_factor) / m->zoom;
+		// // m->re_factor = (m->maxRe - m->minRe) / m->width;
+		// // m->im_factor = (m->maxIm - m->minIm) / m->width;
 		draw_frac(m);
 
 
-		//v->minRe /= 1.25;// += (((x - 600)  * v->reFactor)/10 / v->zoom) / 10;
-		//v->maxRe /= 1.25;//+= (((x - 600) * v->reFactor)/10 / v->zoom) / 10;
-		//v->minIm /= 1.25;//-= (((y - 600)  * v->imFactor)/10 / v->zoom) / 10;
-		//v->maxIm /= 1.25;//-= (((y - 600) * v->imFactor)/10 / v->zoom) / 10;
-		//v->reFactor = (v->maxRe - v->minRe) / v->width;
-		//v->imFactor = (v->maxIm - v->minIm) / v->height;
+		//m->minRe /= 1.25;// += (((x - 600)  * m->re_factor)/10 / m->zoom) / 10;
+		//m->maxRe /= 1.25;//+= (((x - 600) * m->re_factor)/10 / m->zoom) / 10;
+		//m->minIm /= 1.25;//-= (((y - 600)  * m->im_factor)/10 / m->zoom) / 10;
+		//m->maxIm /= 1.25;//-= (((y - 600) * m->im_factor)/10 / m->zoom) / 10;
+		//m->re_factor = (m->maxRe - m->minRe) / m->width;
+		//m->im_factor = (m->maxIm - m->minIm) / m->height;
 		// draw_frac(m);
 	}
 	/* ZOOM IN */
 	if (code == 5)
 	{
-		// draw_frac(m);
+		draw_frac(m);
 		m->zoom *= 1.25;
-		// m->minRe += ((x - (m->width/2))  * m->re_factor)/10;// / v->zoom;
-		// m->maxRe += ((x - (m->width/2)) * m->re_factor)/10;// / v->zoom;
-		// m->minIm -= ((y - (m->height/2))  * m->im_factor)/10;// / v->zoom;
-		// m->maxIm -= ((y - (m->height/2)) * m->im_factor)/10;// / v->zoom;
-		// //v->reFactor = (v->maxRe - v->minRe) / v->width;
-		// //v->imFactor = (v->maxIm - v->minIm) / v->width;
+		// m->minRe += ((x - (m->width/2))  * m->re_factor) / m->zoom;
+		// m->maxRe += ((x - (m->width/2)) * m->re_factor) / m->zoom;
+		// m->minIm -= ((y - (m->height/2))  * m->im_factor) / m->zoom;
+		// m->maxIm -= ((y - (m->height/2)) * m->im_factor) / m->zoom;
+		m->minRe += ((x - (m->width/2)+75)  * m->re_factor) / m->zoom;
+		m->maxRe += ((x - (m->width/2)+75) * m->re_factor) / m->zoom;
+		m->minIm -= ((y - (m->height/2)+75)  * m->im_factor) / m->zoom;
+		m->maxIm -= ((y - (m->height/2)+75) * m->im_factor) / m->zoom;
+		// // m->re_factor = (m->maxRe - m->minRe) / m->width;
+		// // m->im_factor = (m->maxIm - m->minIm) / m->width;
 		draw_frac(m);
 
-		//v->minRe *= 1.25;//+= (((x - 600)  * v->reFactor)/10 / v->zoom) / 10;
-		//v->maxRe *= 1.25;//+= (((x - 600) * v->reFactor)/10/ v->zoom) / 10;
-		//v->minIm *= 1.25;//-= (((y - 600)  * v->imFactor)/10 / v->zoom) / 10;
-		//v->maxIm *= 1.25;//-= (((y - 600) * v->imFactor)/10 / v->zoom) / 10;
-		//v->reFactor = (v->maxRe - v->minRe) / v->width;
-		//v->imFactor = (v->maxIm - v->minIm) / v->height;
+		//m->minRe *= 1.25;//+= (((x - 600)  * m->re_factor)/10 / m->zoom) / 10;
+		//m->maxRe *= 1.25;//+= (((x - 600) * m->re_factor)/10/ m->zoom) / 10;
+		//m->minIm *= 1.25;//-= (((y - 600)  * m->im_factor)/10 / m->zoom) / 10;
+		//m->maxIm *= 1.25;//-= (((y - 600) * m->im_factor)/10 / m->zoom) / 10;
+		//m->re_factor = (m->maxRe - m->minRe) / m->width;
+		//m->im_factor = (m->maxIm - m->minIm) / m->height;
 		// draw_frac(m);
 
 	}
@@ -111,8 +127,10 @@ int			mouse_motion_hook(int x, int y, t_mlx *m)
 {
 	if (m->frac == 2 && m->space % 2 == 0)
 	{
-		m->mouse_x = x/10-(m->width/10);
-		m->mouse_y = y/10-(m->height/10);
+		m->mouse_x = x/2-(m->width/2);
+		m->mouse_y = y/2-(m->height/2);
+		// m->mouse_x = x/10-(m->width/10);
+		// m->mouse_y = y/10-(m->height/10);
 		draw_frac(m);
 	}
     // printf("%d, %d\n", x,y);

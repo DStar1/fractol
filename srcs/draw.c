@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 02:26:09 by hasmith           #+#    #+#             */
-/*   Updated: 2018/10/15 22:48:17 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/13 21:05:37 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,12 @@ static void *draw_in_thread(void *arg){
 			// for(int y=0; y<mast->wsize; ++y)
 			julia(mast, y);
 		}
+		else if (mast->frac == 3){
+			// printf("Julia\n");
+			// for(int y=0; y<mast->wsize; ++y)
+			mandelchick(mast, y);
+		}
+		
 	}
 	return(mast);
 }
@@ -65,7 +71,8 @@ void draw_frac(t_mlx *mast){
 	pthread_t	tid[4];
 
 	i = -1;
-	pixel_str(mast);
+	// pixel_str(mast);
+	ft_bzero(mast->img_int, mast->width * mast->height * 4);
 	thread = ft_memalloc(sizeof(t_thread) * 4);
 	while (++i < 4)
 	{
