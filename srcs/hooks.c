@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/14 19:48:41 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/15 00:38:46 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/15 00:52:48 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int			key_press_hook(int keycode, t_fract *m)
 	else if (keycode == PLUS)
 		m->max_iterations -= 1;
 	else if (keycode == SPACE)
-		m->space += 1;
+		m->h.space += 1;
 	else if (keycode == R_KEY)
 		init(m);
 	else
@@ -51,25 +51,25 @@ int			mouse_zoom_hook(int code, int x, int y, t_fract *m)
 	if (code == 4)
 	{
 		draw_frac(m);
-		m->zoom /= 1.25;
+		m->h.zoom /= 1.25;
 		m->min_re += ((x - (m->width / 2) + (75 / 1.25))
-						* m->re_factor) / m->zoom;
+						* m->re_factor) / m->h.zoom;
 		m->max_re += ((x - (m->width / 2) + (75 / 1.25))
-						* m->re_factor) / m->zoom;
+						* m->re_factor) / m->h.zoom;
 		m->min_im -= ((y - (m->height / 2) + (75 / 1.25))
-						* m->im_factor) / m->zoom;
+						* m->im_factor) / m->h.zoom;
 		m->max_im -= ((y - (m->height / 2) + (75 / 1.25))
-						* m->im_factor) / m->zoom;
+						* m->im_factor) / m->h.zoom;
 		draw_frac(m);
 	}
 	if (code == 5)
 	{
 		draw_frac(m);
-		m->zoom *= 1.25;
-		m->min_re += ((x - (m->width / 2) + 75) * m->re_factor) / m->zoom;
-		m->max_re += ((x - (m->width / 2) + 75) * m->re_factor) / m->zoom;
-		m->min_im -= ((y - (m->height / 2) + 75) * m->im_factor) / m->zoom;
-		m->max_im -= ((y - (m->height / 2) + 75) * m->im_factor) / m->zoom;
+		m->h.zoom *= 1.25;
+		m->min_re += ((x - (m->width / 2) + 75) * m->re_factor) / m->h.zoom;
+		m->max_re += ((x - (m->width / 2) + 75) * m->re_factor) / m->h.zoom;
+		m->min_im -= ((y - (m->height / 2) + 75) * m->im_factor) / m->h.zoom;
+		m->max_im -= ((y - (m->height / 2) + 75) * m->im_factor) / m->h.zoom;
 		draw_frac(m);
 	}
 	return (0);
@@ -92,10 +92,10 @@ int			mouse_press_hook(int code, int x, int y, t_fract *m)
 
 int			mouse_motion_hook(int x, int y, t_fract *m)
 {
-	if (m->frac == 2 && m->space % 2 == 0)
+	if (m->frac == 2 && m->h.space % 2 == 0)
 	{
-		m->mouse_x = x / 2 - (m->width / 2);
-		m->mouse_y = y / 2 - (m->height / 2);
+		m->h.mouse_x = x / 2 - (m->width / 2);
+		m->h.mouse_y = y / 2 - (m->height / 2);
 		draw_frac(m);
 	}
 	return (1);

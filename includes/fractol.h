@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 02:26:27 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/15 00:46:57 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/15 00:54:32 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,18 +84,14 @@ typedef struct		s_mlx
 	void			*win;
 }					t_mlx;
 
-// typedef struct		s_hooks
-// {
-// 	int				space;
-// 	int				mouse_x;
-// 	int				mouse_y;
-// 	int				mouse_left_x;
-// 	int				mouse_left_y;
-// 	int				mouse_right_x;
-// 	int				mouse_right_y;
-// 	double			zoom;
-// 	double			zoom_freeze;
-// }					t_hooks;
+typedef struct		s_hooks
+{
+	int				space;
+	int				mouse_x;
+	int				mouse_y;
+	double			zoom;
+	double			z_freeze;
+}					t_hooks;
 
 typedef struct		s_fract
 {
@@ -105,17 +101,7 @@ typedef struct		s_fract
 	int				height;
 	int				width;
 
-//hooks struct
-	// t_hooks			h;
-	int				space;
-	int				mouse_x;
-	int				mouse_y;
-	int				mouse_left_x;
-	int				mouse_left_y;
-	int				mouse_right_x;
-	int				mouse_right_y;
-	double			zoom;
-	double			zoom_freeze;
+	t_hooks			h;
 
 	double			min_re;
 	double			max_re;
@@ -124,8 +110,6 @@ typedef struct		s_fract
 	double			re_factor;
 	double			im_factor;
 	int				max_iterations;
-
-
 
 	t_colors		c;
 	t_sets			*s;

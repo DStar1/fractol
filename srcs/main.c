@@ -6,14 +6,14 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 02:25:43 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/15 00:42:20 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/15 00:51:13 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
 /*
-** creates a string with alocated space for all pixels on screen
+** creates a string with alocated h.space for all pixels on screen
 */
 
 void	pixel_str(t_fract *m)
@@ -46,16 +46,16 @@ void	init(t_fract *m)
 	m->min_im = -2;
 	m->max_im = 2.0;
 	m->max_iterations = 30;
-	m->zoom = 1;
+	m->h.zoom = 1;
 	m->re_factor = (m->max_re - m->min_re) / (m->width);
 	m->im_factor = (m->max_im - m->min_im) / (m->height);
 	m->min_re += (((m->width / 2) - (m->width / 2)) * m->re_factor);
 	m->max_re += (((m->width / 2) - (m->width / 2)) * m->re_factor);
 	m->min_im -= (((m->height / 2) - (m->height / 2)) * m->im_factor);
 	m->max_im -= (((m->height / 2) - (m->height / 2)) * m->im_factor);
-	m->space = 0;
-	m->mouse_x = m->width / 2;
-	m->mouse_y = m->height / 2;
+	m->h.space = 0;
+	m->h.mouse_x = m->width / 2;
+	m->h.mouse_y = m->height / 2;
 	m->c.color = 1;
 	m->c.color_shift = 0;
 	m->c.color_change = 0xE0E907;
