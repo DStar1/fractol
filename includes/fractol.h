@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 02:26:27 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/14 01:35:46 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/14 23:56:23 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <math.h>
 # include <stdio.h>
 # include <pthread.h>
+
+# define SQUARE(x) (x * x)
 
 /*
 	if (keycode == 53)//exit
@@ -56,12 +58,22 @@ typedef	struct		s_sets
 
 	double			c_im;
 	double			c_re;
+	double			z_re2;
+	double			z_im2;
+	double			z_re;
+	double			z_im;
 	int				n;
-	double			Z_re2;
-	double			Z_im2;
-	double			Z_re;
-	double			Z_im;
+	int				x;
 }					t_sets;
+
+typedef	struct		s_colors
+{
+	int				full_spectrum[16];
+	int				blue_brown[16];
+	int				gray_scale[16];
+	int				blossom[16];
+	int				the_sun[16];
+}					t_colors;
 
 typedef struct		s_fract
 {
@@ -95,14 +107,16 @@ typedef struct		s_fract
 	// double			c_im;
 	// double			c_re;
 	// int				n;
-	// double			Z_re2;
-	// double			Z_im2;
-	// double			Z_re;
-	// double			Z_im;
+	// double			z_re2;
+	// double			z_im2;
+	// double			z_re;
+	// double			z_im;
 	int				color_shift;
 	int				color;
 	int				color_change;
+	t_colors		c;
 	double			zoom;
+	double			zoom_freeze;
 	double			move_x;
 	double			move_y;
 	t_sets			*s;
@@ -135,5 +149,6 @@ void				psychedelic(t_fract *m, int x, int y, int i);
 void				init(t_fract *m);
 void				mandelchick(t_fract *mast, int y);
 void				color_shift(t_fract *mast);
+void				color_hooks(int keycode, t_fract *mast);
 
 #endif

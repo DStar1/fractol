@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/14 19:48:41 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/14 01:14:06 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/14 23:51:34 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,10 @@ int			key_press_hook(int keycode, t_fract *mast)
 		mast->max_iterations -= 1;
 	else if (keycode == 49)
 		mast->space += 1;
-	else if (keycode == 8)
-		color_shift(mast);
-	else if (keycode == 83)
-		mast->color = 1;
-	else if (keycode == 84)
-		mast->color = 2;
-	else if (keycode == 85)
-		mast->color = 3;
-	else if (keycode == 86)
-		mast->color = 4;
-	else if (keycode == 87)
-		mast->color = 5;
-	else if (keycode == 88)
-		mast->color = 6;
 	else if (keycode == 15)
 		init(mast);
+	else
+		color_hooks(keycode, mast);
 	move_xy(mast);
 	return (0);
 }

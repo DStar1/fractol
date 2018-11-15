@@ -6,176 +6,126 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/15 15:13:12 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/14 01:58:07 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/14 23:56:45 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "fractol.h"
+#include "fractol.h"
 
-void mandelbrot(t_fract *m, int y){
-	double c_im;
-	double c_re;
-	int n;
-	double Z_re2;
-	double Z_im2;
-	double Z_re;
-	double Z_im;
-	int x;
+t_sets		*intit_fract_vars(t_fract *m)
+{
+	t_sets	*f_vars;
 
-	c_im = m->max_im - (y * m->im_factor) / m->zoom;
-	x = 0;
-	while (x < m->width)
+	(void)m;
+	f_vars = ft_memalloc(sizeof(t_sets));
+	f_vars->c_im = 0;
+	f_vars->c_re = 0;
+	f_vars->z_re2 = 0;
+	f_vars->z_im2 = 0;
+	f_vars->z_re = 0;
+	f_vars->z_im = 0;
+	f_vars->x = -1;
+	f_vars->n = 0;
+	return (f_vars);
+}
+
+void		mandelbrot(t_fract *m, int y)
+{
+	t_sets	*f_vars;
+
+	f_vars = intit_fract_vars(m);
+	f_vars->c_im = m->max_im - (y * m->im_factor) / m->zoom;
+	while (++(f_vars->x) < m->width)
 	{
-		c_re = m->min_re + (x * m->re_factor) / m->zoom;
-		Z_re = c_re;
-		Z_im = c_im;
-		n = 0;
-		while (n < m->max_iterations)
+		f_vars->c_re = m->min_re + (f_vars->x * m->re_factor) / m->zoom;
+		f_vars->z_re = f_vars->c_re;
+		f_vars->z_im = f_vars->c_im;
+		f_vars->n = -1;
+		while (++f_vars->n < m->max_iterations)
 		{
-			Z_re2 = Z_re * Z_re;
-			Z_im2 = Z_im * Z_im;
-			if(Z_re2 + Z_im2 > 4)
-				break;
-			Z_im = (2 * Z_re * Z_im) + c_im;
-			Z_re = Z_re2 - Z_im2 + c_re;
-			++n;
+			f_vars->z_re2 = f_vars->z_re * f_vars->z_re;
+			f_vars->z_im2 = f_vars->z_im * f_vars->z_im;
+			if (f_vars->z_re2 + f_vars->z_im2 > 4)
+				break ;
+			f_vars->z_im = (2 * f_vars->z_re * f_vars->z_im) + f_vars->c_im;
+			f_vars->z_re = f_vars->z_re2 - f_vars->z_im2 + f_vars->c_re;
 		}
-		if (n < m->max_iterations)
-			psychedelic(m, x, y, n);
+		if (f_vars->n < m->max_iterations)
+			psychedelic(m, f_vars->x, y, f_vars->n);
 		else
-			pixel_put(m, x, y, 0x000000);
-		++x;
+			pixel_put(m, f_vars->x, y, 0x000000);
 	}
+	free(f_vars);
 }
 
-void julia(t_fract *m, int y){
-	double c_im;
-	double c_re;
-	int n;
-	double Z_re2;
-	double Z_im2;
-	double Z_re;
-	double Z_im;
-	int x;
-
-	if (m->space % 2 != 0){
-		c_im = m->mouse_y * m->im_factor;
-		c_re = m->mouse_x * m->re_factor;
-	}
-	else{
-		c_im = (m->mouse_y * m->im_factor) / m->zoom;
-		c_re = (m->mouse_x * m->re_factor) / m->zoom;
-	}
-	x = 0;
-	while (x < m->width)
+void		julia_help(t_fract *m, t_sets **f_vars)
+{
+	if (m->space % 2 != 0)
 	{
-		Z_re = m->min_re + (x * m->re_factor) / m->zoom;
-		Z_im = m->max_im - (y * m->im_factor) / m->zoom;
-		n = 0;
-		while (n < m->max_iterations)
-		{
-			Z_re2 = Z_re * Z_re;
-			Z_im2 = Z_im * Z_im;
-			if(Z_re2 + Z_im2 > 4)
-				break;
-			Z_im = (2 * Z_re * Z_im) + c_im;
-			Z_re = Z_re2 - Z_im2 + c_re;
-			++n;
-		}
-		if (n < m->max_iterations)
-			psychedelic(m, x, y, n);
-		else
-			pixel_put(m, x, y, 0x000000);
-		++x;
+		(*f_vars)->c_im = (m->mouse_y * m->im_factor) / m->zoom_freeze;
+		(*f_vars)->c_re = (m->mouse_x * m->re_factor) / m->zoom_freeze;
 	}
-}
-
-
-void mandelchick(t_fract *m, int y){
-	double c_im;
-	double c_re;
-	int n;
-	double Z_re2;
-	double Z_im2;
-	double Z_re;
-	double Z_im;
-	int x;
-
-	c_im = m->max_im - (y * m->im_factor);
-	x = 0;
-	while (x < m->width)
+	else
 	{
-		c_re = m->min_re + x * m->re_factor;
-		Z_re = c_re;
-		Z_im = c_im;
-		n = 0;
-		while (n < m->max_iterations)
-		{
-			Z_re2 = Z_re * Z_re / m->zoom;
-			Z_im2 = Z_im * Z_im / m->zoom;
-			if(Z_re2 + Z_im2 > 4)
-				break;
-			Z_im = 2 * Z_re * Z_im + c_im;
-			Z_re = Z_re2 - Z_im2 + c_re;
-			++n;
-		}
-		if (n < m->max_iterations)
-			psychedelic(m, x, y, n);
-		else
-			pixel_put(m, x, y, 0x000000);
-		++x;
+		(*f_vars)->c_im = (m->mouse_y * m->im_factor) / m->zoom;
+		(*f_vars)->c_re = (m->mouse_x * m->re_factor) / m->zoom;
+		m->zoom_freeze = m->zoom;
 	}
 }
 
-/*
-void mandelbrot1(t_fract *m, int y){
-	// m->max_im = m->min_im+(m->max_re-m->min_re)*m->wsize/m->wsize;
-	// m->re_factor = (m->max_re-m->min_re)/(0.5 * m->zoom * m->wsize-1);// -(m->move_x*100);//move_x?
-	// m->im_factor = (m->max_im-m->min_im)/(0.5 * m->zoom * m->wsize-1);// -(m->move_y*100);//move_y?
+void		julia(t_fract *m, int y)
+{
+	t_sets	*f_vars;
 
-	// for(int y=0; y<m->wsize; ++y)
-	// {
-		// printf("INNNNNNN\n");
-		int n;
-		double c_im = m->max_im - (y*m->im_factor) / m->zoom;
-		for(int x=0; x<m->wsize; ++x)
+	f_vars = intit_fract_vars(m);
+	julia_help(m, &f_vars);
+	while (++(f_vars->x) < m->width)
+	{
+		f_vars->z_re = m->min_re + (f_vars->x * m->re_factor) / m->zoom;
+		f_vars->z_im = m->max_im - (y * m->im_factor) / m->zoom;
+		f_vars->n = -1;
+		while (++f_vars->n < m->max_iterations)
 		{
-			double c_re = (m->min_re + x*m->re_factor)/m->zoom;
-			// double Z_re = m->min_re + (x * m->re_factor)/m->zoom;
-			// double Z_im = m->max_im - (y * m->im_factor)/m->zoom;
-
-			double Z_re = c_re;
-			double Z_im = c_im;
-			int isInside = 1;
-			n = 0;
-			while (n < m->max_iterations)
-			{
-
-				double Z_re2 = Z_re*Z_re;
-				double Z_im2 = Z_im*Z_im;
-				if(Z_re2 + Z_im2 > 4)
-				{
-					isInside = 0;
-						++n;break;
-
-				}
-				Z_im = 2*Z_re*Z_im + c_im;
-				Z_re = Z_re2 - Z_im2 + c_re;
-			}
-			if (n < m->max_iterations){
-				//use color model conversion to get rainbow palette, make brightness black if max_iterations reached
-				// color = HSVtoRGB(ColorHSV(i % 256, 255, 255 * (i < max_iterations)));
-				psychedelic(m, x, y, n);
-			}
-			if(isInside) {
-				// psychedelic(m, x, y, i)
-				pixel_put(m, x, y, 0x990000);
-			}
-			// pixel_put(m, 600, 600, 0xFF0000);
-			// pixel_put(m, 601, 599, 0xFF0000);
-			// pixel_put(m, 599, 601, 0xFF0000);
-			// pixel_put(m, 601, 601, 0xFF0000);
-			// pixel_put(m, 599, 599, 0xFF0000);
+			f_vars->z_re2 = f_vars->z_re * f_vars->z_re;
+			f_vars->z_im2 = f_vars->z_im * f_vars->z_im;
+			if (f_vars->z_re2 + f_vars->z_im2 > 4)
+				break ;
+			f_vars->z_im = (2 * f_vars->z_re * f_vars->z_im) + f_vars->c_im;
+			f_vars->z_re = f_vars->z_re2 - f_vars->z_im2 + f_vars->c_re;
 		}
+		if (f_vars->n < m->max_iterations)
+			psychedelic(m, f_vars->x, y, f_vars->n);
+		else
+			pixel_put(m, f_vars->x, y, 0x000000);
+	}
+	free(f_vars);
 }
-*/
+
+void		mandelchick(t_fract *m, int y)
+{
+	t_sets	*f_vars;
+
+	f_vars = intit_fract_vars(m);
+	f_vars->c_im = m->max_im - (y * m->im_factor);
+	while (++(f_vars->x) < m->width)
+	{
+		f_vars->c_re = m->min_re + f_vars->x * m->re_factor;
+		f_vars->z_re = f_vars->c_re;
+		f_vars->z_im = f_vars->c_im;
+		f_vars->n = -1;
+		while (++f_vars->n < m->max_iterations)
+		{
+			f_vars->z_re2 = f_vars->z_re * f_vars->z_re / m->zoom;
+			f_vars->z_im2 = f_vars->z_im * f_vars->z_im / m->zoom;
+			if (f_vars->z_re2 + f_vars->z_im2 > 4)
+				break ;
+			f_vars->z_im = 2 * f_vars->z_re * f_vars->z_im + f_vars->c_im;
+			f_vars->z_re = f_vars->z_re2 - f_vars->z_im2 + f_vars->c_re;
+		}
+		if (f_vars->n < m->max_iterations)
+			psychedelic(m, f_vars->x, y, f_vars->n);
+		else
+			pixel_put(m, f_vars->x, y, 0x000000);
+	}
+	free(f_vars);
+}
