@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/14 19:48:41 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/14 23:51:34 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/15 00:10:03 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,23 @@
 
 int			key_press_hook(int keycode, t_fract *mast)
 {
-	if (keycode == 53)
+	if (keycode == EXIT_KEY)
 		exit(1);
-	else if (keycode == 126)
+	else if (keycode == UP)
 		move_up(mast);
-	else if (keycode == 125)
+	else if (keycode == DOWN)
 		move_down(mast);
-	else if (keycode == 124)
+	else if (keycode == RIGHT)
 		move_right(mast);
-	else if (keycode == 123)
+	else if (keycode == LEFT)
 		move_left(mast);
-	else if (keycode == 69)
+	else if (keycode == MINUS)
 		mast->max_iterations += 1;
-	else if (keycode == 78)
+	else if (keycode == PLUS)
 		mast->max_iterations -= 1;
-	else if (keycode == 49)
+	else if (keycode == SPACE)
 		mast->space += 1;
-	else if (keycode == 15)
+	else if (keycode == R_KEY)
 		init(mast);
 	else
 		color_hooks(keycode, mast);

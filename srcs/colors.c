@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 18:48:52 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/14 23:56:31 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/15 00:11:34 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@
 
 void		color_hooks(int keycode, t_fract *mast)
 {
-	if (keycode == 8)
+	if (keycode == C_KEY)
 		color_shift(mast);
-	else if (keycode == 83)
+	else if (keycode == ONE)
 		mast->color = 1;
-	else if (keycode == 84)
+	else if (keycode == TWO)
 		mast->color = 2;
-	else if (keycode == 85)
+	else if (keycode == THREE)
 		mast->color = 3;
-	else if (keycode == 86)
+	else if (keycode == FOUR)
 		mast->color = 4;
-	else if (keycode == 87)
+	else if (keycode == FIVE)
 		mast->color = 5;
-	else if (keycode == 88)
+	else if (keycode == SIX)
 		mast->color = 6;
 }
 

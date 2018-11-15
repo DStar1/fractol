@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 02:26:27 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/14 23:56:23 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/15 00:13:33 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,31 +20,25 @@
 # include <pthread.h>
 
 # define SQUARE(x) (x * x)
+# define EXIT_KEY 53
+# define UP 126
+# define DOWN 125
+# define RIGHT 124
+# define LEFT 123
+# define MINUS 69
+# define PLUS 78
+# define SPACE 49
+# define C_KEY 8
+# define ONE 83
+# define TWO 84
+# define THREE 85
+# define FOUR 86
+# define FIVE 87
+# define SIX 88
+# define R_KEY 15
+# define ZOOM_OUT 4
+# define ZOOM_IN 5
 
-/*
-	if (keycode == 53)//exit
-	else if (keycode == 126)//up
-	else if (keycode == 125)//down
-	else if (keycode == 124)//right
-	else if (keycode == 123)//left
-	else if (keycode == 69)//minus
-	else if (keycode == 78)//plus
-	else if (keycode == 49)//space
-	else if (keycode == 8)// c
-	else if (keycode == 83)//1
-	else if (keycode == 84)//2
-	else if (keycode == 85)//3
-	else if (keycode == 86)//4
-	else if (keycode == 87)//5
-	else if (keycode == 88)//6
-	else if (keycode == 15)//r = reset
-
-	// ZOOM OUT
-	// if (code == 4)
-	// ZOOM IN 
-	// if (code == 5)
-
-*/
 
 typedef	struct		s_sets
 {
@@ -85,6 +79,7 @@ typedef struct		s_fract
 	int				endian;
 	void			*mlx;
 	void			*win;
+
 	int				frac;
 	int				toggle;
 	int				space;
@@ -97,6 +92,7 @@ typedef struct		s_fract
 	int				mouse_left_y;
 	int				mouse_right_x;
 	int				mouse_right_y;
+
 	double			min_re;
 	double			max_re;
 	double			min_im;
@@ -104,13 +100,7 @@ typedef struct		s_fract
 	double			re_factor;
 	double			im_factor;
 	int				max_iterations;
-	// double			c_im;
-	// double			c_re;
-	// int				n;
-	// double			z_re2;
-	// double			z_im2;
-	// double			z_re;
-	// double			z_im;
+
 	int				color_shift;
 	int				color;
 	int				color_change;
