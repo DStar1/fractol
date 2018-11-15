@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 02:26:27 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/15 00:54:32 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/15 00:57:29 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,8 @@
 # define ZOOM_OUT 4
 # define ZOOM_IN 5
 
-
 typedef	struct		s_sets
 {
-	// double			min_re;
-	// double			max_re;
-	// double			min_im;
-	// double			max_im;
-	// double			re_factor;
-	// double			im_factor;
-	// int				max_iterations;
-
 	double			c_im;
 	double			c_re;
 	double			z_re2;
@@ -96,13 +87,10 @@ typedef struct		s_hooks
 typedef struct		s_fract
 {
 	t_mlx			mlx_s;
-
 	int				frac;
 	int				height;
 	int				width;
-
 	t_hooks			h;
-
 	double			min_re;
 	double			max_re;
 	double			min_im;
@@ -110,7 +98,6 @@ typedef struct		s_fract
 	double			re_factor;
 	double			im_factor;
 	int				max_iterations;
-
 	t_colors		c;
 	t_sets			*s;
 }					t_fract;

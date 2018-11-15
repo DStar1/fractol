@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 02:25:43 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/15 00:51:13 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/15 00:55:58 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ int		main(int argc, char *argv[])
 
 	m = ft_memalloc(sizeof(t_fract));
 	m->s = ft_memalloc(sizeof(t_sets));
-	// m->move_x = 0;
-	// m->move_y = 0;
 	init(m);
 	m->mlx_s.mlx = mlx_init();
 	m->mlx_s.win = mlx_new_window(m->mlx_s.mlx, m->width, m->height, "FRACTOL");
