@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/14 19:48:41 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/15 00:10:03 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/15 00:38:46 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,29 @@
 ** Key hooks
 */
 
-int			key_press_hook(int keycode, t_fract *mast)
+int			key_press_hook(int keycode, t_fract *m)
 {
 	if (keycode == EXIT_KEY)
 		exit(1);
 	else if (keycode == UP)
-		move_up(mast);
+		move_up(m);
 	else if (keycode == DOWN)
-		move_down(mast);
+		move_down(m);
 	else if (keycode == RIGHT)
-		move_right(mast);
+		move_right(m);
 	else if (keycode == LEFT)
-		move_left(mast);
+		move_left(m);
 	else if (keycode == MINUS)
-		mast->max_iterations += 1;
+		m->max_iterations += 1;
 	else if (keycode == PLUS)
-		mast->max_iterations -= 1;
+		m->max_iterations -= 1;
 	else if (keycode == SPACE)
-		mast->space += 1;
+		m->space += 1;
 	else if (keycode == R_KEY)
-		init(mast);
+		init(m);
 	else
-		color_hooks(keycode, mast);
-	move_xy(mast);
+		color_hooks(keycode, m);
+	move_xy(m);
 	return (0);
 }
 
@@ -103,7 +103,7 @@ int			mouse_motion_hook(int x, int y, t_fract *m)
 
 void		set_hooks(t_fract *m)
 {
-	mlx_hook(m->win, 2, 0, key_press_hook, m);
-	mlx_hook(m->win, 4, 0, mouse_press_hook, m);
-	mlx_hook(m->win, 6, 0, mouse_motion_hook, m);
+	mlx_hook(m->mlx_s.win, 2, 0, key_press_hook, m);
+	mlx_hook(m->mlx_s.win, 4, 0, mouse_press_hook, m);
+	mlx_hook(m->mlx_s.win, 6, 0, mouse_motion_hook, m);
 }

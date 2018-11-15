@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 02:26:27 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/15 00:13:33 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/15 00:46:57 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,31 +67,55 @@ typedef	struct		s_colors
 	int				gray_scale[16];
 	int				blossom[16];
 	int				the_sun[16];
+	int				color_shift;
+	int				color;
+	int				color_change;
+
 }					t_colors;
 
-typedef struct		s_fract
+typedef struct		s_mlx
 {
 	int				*img_int;
-	void			*mlx_ptr;
 	void			*img_ptr;
 	int				bpp;
 	int				size_line;
 	int				endian;
 	void			*mlx;
 	void			*win;
+}					t_mlx;
+
+// typedef struct		s_hooks
+// {
+// 	int				space;
+// 	int				mouse_x;
+// 	int				mouse_y;
+// 	int				mouse_left_x;
+// 	int				mouse_left_y;
+// 	int				mouse_right_x;
+// 	int				mouse_right_y;
+// 	double			zoom;
+// 	double			zoom_freeze;
+// }					t_hooks;
+
+typedef struct		s_fract
+{
+	t_mlx			mlx_s;
 
 	int				frac;
-	int				toggle;
-	int				space;
-	int				wsize;
 	int				height;
 	int				width;
+
+//hooks struct
+	// t_hooks			h;
+	int				space;
 	int				mouse_x;
 	int				mouse_y;
 	int				mouse_left_x;
 	int				mouse_left_y;
 	int				mouse_right_x;
 	int				mouse_right_y;
+	double			zoom;
+	double			zoom_freeze;
 
 	double			min_re;
 	double			max_re;
@@ -101,14 +125,9 @@ typedef struct		s_fract
 	double			im_factor;
 	int				max_iterations;
 
-	int				color_shift;
-	int				color;
-	int				color_change;
+
+
 	t_colors		c;
-	double			zoom;
-	double			zoom_freeze;
-	double			move_x;
-	double			move_y;
 	t_sets			*s;
 }					t_fract;
 
@@ -134,7 +153,7 @@ int					mouse_press_hook(int code, int x, int y, t_fract *m);
 void				move_xy(t_fract *mast);
 void				mandelbrot(t_fract *mast, int y);
 void				julia(t_fract *mast, int y);
-void				pixel_put(t_fract *mlx, int x, int y, int color);
+void				pixel_put(t_fract *m, int x, int y, int color);
 void				psychedelic(t_fract *m, int x, int y, int i);
 void				init(t_fract *m);
 void				mandelchick(t_fract *mast, int y);
