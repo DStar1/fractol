@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 02:26:27 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/14 23:56:23 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/15 00:57:29 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,42 +20,27 @@
 # include <pthread.h>
 
 # define SQUARE(x) (x * x)
-
-/*
-	if (keycode == 53)//exit
-	else if (keycode == 126)//up
-	else if (keycode == 125)//down
-	else if (keycode == 124)//right
-	else if (keycode == 123)//left
-	else if (keycode == 69)//minus
-	else if (keycode == 78)//plus
-	else if (keycode == 49)//space
-	else if (keycode == 8)// c
-	else if (keycode == 83)//1
-	else if (keycode == 84)//2
-	else if (keycode == 85)//3
-	else if (keycode == 86)//4
-	else if (keycode == 87)//5
-	else if (keycode == 88)//6
-	else if (keycode == 15)//r = reset
-
-	// ZOOM OUT
-	// if (code == 4)
-	// ZOOM IN 
-	// if (code == 5)
-
-*/
+# define EXIT_KEY 53
+# define UP 126
+# define DOWN 125
+# define RIGHT 124
+# define LEFT 123
+# define MINUS 69
+# define PLUS 78
+# define SPACE 49
+# define C_KEY 8
+# define ONE 83
+# define TWO 84
+# define THREE 85
+# define FOUR 86
+# define FIVE 87
+# define SIX 88
+# define R_KEY 15
+# define ZOOM_OUT 4
+# define ZOOM_IN 5
 
 typedef	struct		s_sets
 {
-	// double			min_re;
-	// double			max_re;
-	// double			min_im;
-	// double			max_im;
-	// double			re_factor;
-	// double			im_factor;
-	// int				max_iterations;
-
 	double			c_im;
 	double			c_re;
 	double			z_re2;
@@ -73,30 +58,39 @@ typedef	struct		s_colors
 	int				gray_scale[16];
 	int				blossom[16];
 	int				the_sun[16];
+	int				color_shift;
+	int				color;
+	int				color_change;
+
 }					t_colors;
 
-typedef struct		s_fract
+typedef struct		s_mlx
 {
 	int				*img_int;
-	void			*mlx_ptr;
 	void			*img_ptr;
 	int				bpp;
 	int				size_line;
 	int				endian;
 	void			*mlx;
 	void			*win;
-	int				frac;
-	int				toggle;
+}					t_mlx;
+
+typedef struct		s_hooks
+{
 	int				space;
-	int				wsize;
-	int				height;
-	int				width;
 	int				mouse_x;
 	int				mouse_y;
-	int				mouse_left_x;
-	int				mouse_left_y;
-	int				mouse_right_x;
-	int				mouse_right_y;
+	double			zoom;
+	double			z_freeze;
+}					t_hooks;
+
+typedef struct		s_fract
+{
+	t_mlx			mlx_s;
+	int				frac;
+	int				height;
+	int				width;
+	t_hooks			h;
 	double			min_re;
 	double			max_re;
 	double			min_im;
@@ -104,21 +98,7 @@ typedef struct		s_fract
 	double			re_factor;
 	double			im_factor;
 	int				max_iterations;
-	// double			c_im;
-	// double			c_re;
-	// int				n;
-	// double			z_re2;
-	// double			z_im2;
-	// double			z_re;
-	// double			z_im;
-	int				color_shift;
-	int				color;
-	int				color_change;
 	t_colors		c;
-	double			zoom;
-	double			zoom_freeze;
-	double			move_x;
-	double			move_y;
 	t_sets			*s;
 }					t_fract;
 
@@ -144,7 +124,7 @@ int					mouse_press_hook(int code, int x, int y, t_fract *m);
 void				move_xy(t_fract *mast);
 void				mandelbrot(t_fract *mast, int y);
 void				julia(t_fract *mast, int y);
-void				pixel_put(t_fract *mlx, int x, int y, int color);
+void				pixel_put(t_fract *m, int x, int y, int color);
 void				psychedelic(t_fract *m, int x, int y, int i);
 void				init(t_fract *m);
 void				mandelchick(t_fract *mast, int y);

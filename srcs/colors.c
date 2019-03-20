@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 18:48:52 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/14 23:56:31 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/15 00:38:40 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,29 @@
 ** Color hooks (extentions of key_hooks)
 */
 
-void		color_hooks(int keycode, t_fract *mast)
+void		color_hooks(int keycode, t_fract *m)
 {
-	if (keycode == 8)
-		color_shift(mast);
-	else if (keycode == 83)
-		mast->color = 1;
-	else if (keycode == 84)
-		mast->color = 2;
-	else if (keycode == 85)
-		mast->color = 3;
-	else if (keycode == 86)
-		mast->color = 4;
-	else if (keycode == 87)
-		mast->color = 5;
-	else if (keycode == 88)
-		mast->color = 6;
+	if (keycode == C_KEY)
+		color_shift(m);
+	else if (keycode == ONE)
+		m->c.color = 1;
+	else if (keycode == TWO)
+		m->c.color = 2;
+	else if (keycode == THREE)
+		m->c.color = 3;
+	else if (keycode == FOUR)
+		m->c.color = 4;
+	else if (keycode == FIVE)
+		m->c.color = 5;
+	else if (keycode == SIX)
+		m->c.color = 6;
 }
 
-void		color_shift(t_fract *mast)
+void		color_shift(t_fract *m)
 {
-	mast->color_shift += 1;
-	if (mast->color_shift > 16)
-		mast->color_shift = 0;
+	m->c.color_shift += 1;
+	if (m->c.color_shift > 16)
+		m->c.color_shift = 0;
 }
 
 void		psychedelic2(t_fract *m, int x, int y, int i)
@@ -54,14 +54,14 @@ void		psychedelic2(t_fract *m, int x, int y, int i)
 		0xDF5607, 0xDE4707, 0xDC3807, 0xDB2A07, 0xDB1C07, 0xDA0D06
 	};
 
-	if (m->color == 4)
-		pixel_put(m, x, y, blossom[(i + m->color_shift) % 16]);
-	else if (m->color == 5)
-		pixel_put(m, x, y, the_sun[(i + m->color_shift) % 16]);
-	else if (m->color == 6)
+	if (m->c.color == 4)
+		pixel_put(m, x, y, blossom[(i + m->c.color_shift) % 16]);
+	else if (m->c.color == 5)
+		pixel_put(m, x, y, the_sun[(i + m->c.color_shift) % 16]);
+	else if (m->c.color == 6)
 	{
-		m->color_change += 1;
-		pixel_put(m, x, y, m->color_change);
+		m->c.color_change += 1;
+		pixel_put(m, x, y, m->c.color_change);
 	}
 }
 
@@ -83,12 +83,12 @@ void		psychedelic(t_fract *m, int x, int y, int i)
 		0xAAAAAA, 0xB8B8B8, 0xC6C6C6, 0xD4D4D4, 0xE2E2E2, 0xF0F0F0
 	};
 
-	if (m->color == 1)
-		pixel_put(m, x, y, full_spectrum[(i + m->color_shift) % 16]);
-	else if (m->color == 2)
-		pixel_put(m, x, y, blue_brown[(i + m->color_shift) % 16]);
-	else if (m->color == 3)
-		pixel_put(m, x, y, gray_scale[(i + m->color_shift) % 16]);
+	if (m->c.color == 1)
+		pixel_put(m, x, y, full_spectrum[(i + m->c.color_shift) % 16]);
+	else if (m->c.color == 2)
+		pixel_put(m, x, y, blue_brown[(i + m->c.color_shift) % 16]);
+	else if (m->c.color == 3)
+		pixel_put(m, x, y, gray_scale[(i + m->c.color_shift) % 16]);
 	else
 		psychedelic2(m, x, y, i);
 }
